@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     public bool Killer;
     Animator Animator;
+    ParticleSystem ParticleSystem;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
         StabCollider = GetComponentInChildren<BoxCollider>();
         StabCollider.enabled = false;
         Animator = GetComponent<Animator>();
+        ParticleSystem = GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -116,6 +118,7 @@ public class Player : MonoBehaviour
             Animator.SetTrigger("Bystander");
         }
         SwapOnCooldown = true;
+        ParticleSystem.Play();
         Invoke("SwapCooldownDone", 5);
     }
 
