@@ -13,6 +13,13 @@ public class Player : MonoBehaviour
     private Transform SpriteTransform;
     private SphereCollider YellCollider;
     private BoxCollider StabCollider;
+
+    public Player OtherPlayer;
+    public bool Swapping;
+    public bool SwapOnCooldown;
+
+    public bool Killer;
+    Animator Animator;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -22,6 +29,7 @@ public class Player : MonoBehaviour
         YellCollider = GetComponent<SphereCollider>();
         StabCollider = GetComponentInChildren<BoxCollider>();
         StabCollider.enabled = false;
+        Animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -65,10 +73,13 @@ public class Player : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-        print(name + " Attacked");
-        if(!StabCollider.enabled)
+        if (Killer)
         {
-            StartCoroutine(Stab());
+            print(name + " Attacked");
+            if (!StabCollider.enabled)
+            {
+                StartCoroutine(Stab());
+            }
         }
     }
 
@@ -77,6 +88,40 @@ public class Player : MonoBehaviour
         StabCollider.enabled = true;
         yield return new WaitForSeconds(.2f);
         StabCollider.enabled = false;
+    }
+
+    public void OnSwap(InputValue value)
+    {
+        if (OtherPlayer != null && !SwapOnCooldown)
+        {
+            Swapping = value.isPressed;
+            if (OtherPlayer.Swapping && Swapping && Vector3.Distance(transform.position, OtherPlayer.transform.position) < 4)
+            {
+                Swap();
+                OtherPlayer.Swap();
+            }
+        }
+    }
+
+    public void Swap()
+    {
+        Swapping = false;
+        Killer = !Killer;
+        if(Killer)
+        {
+            Animator.SetTrigger("Killer");
+        }
+        else
+        {
+            Animator.SetTrigger("Bystander");
+        }
+        SwapOnCooldown = true;
+        Invoke("SwapCooldownDone", 5);
+    }
+
+    public void SwapCooldownDone()
+    {
+        SwapOnCooldown = false;
     }
 
     

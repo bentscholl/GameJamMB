@@ -54,11 +54,13 @@ public class NPC : MonoBehaviour
         Animator.SetTrigger("Kill");
         Agent.enabled = false;
         IsDead = true;
+        gameObject.layer = LayerMask.NameToLayer("Dead");
         StartCoroutine(Die());
     }
 
     public IEnumerator Die()
     {
+        yield return new WaitForSeconds(.3f);
         DeathCall.enabled = true;
         yield return new WaitForSeconds(.2f);
         DeathCall.enabled = false;
@@ -77,13 +79,17 @@ public class NPC : MonoBehaviour
             else if (other.name.Contains("NPC"))
             {
                 RaycastHit hit;
-                Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 10);
+                Vector3 Direction = other.transform.position - transform.position;
+                Physics.Raycast(transform.position, Direction, out hit, 10, BodySpotting);
                 Debug.DrawLine(transform.position, hit.point, Color.red,5);
-                NPC NPC = hit.collider.GetComponent<NPC>();
-                if (NPC != null && NPC.IsDead) 
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead")) 
                 {
-                    transform.LookAt(other.transform);
-                    print("Spotted");
+                    if (Direction.x > 0)
+                        Sprite.flipX = true;
+                    else if (Direction.x < 0)
+                        Sprite.flipX = false;
+
+                        print("Spotted");
                 }
             }
         }

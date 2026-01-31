@@ -11,9 +11,13 @@ public class PlayerJoin : MonoBehaviour
     {
         input = GetComponent<PlayerInput>();
         if (input.playerIndex == 0)
+        {
             Instantiate(Resources.Load("Combover"), transform);
+        }
         else
-            Instantiate(Resources.Load("Meathead"),transform);
+        {
+            Instantiate(Resources.Load("Meathead"), transform);
+        }
     }
 
     

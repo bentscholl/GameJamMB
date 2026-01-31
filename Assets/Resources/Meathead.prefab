@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8a9ba2652a9c5704380f1d8cd819f212, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ae9f0e94eb4b7e945bcc84cd266e08be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 2089907229766417315}
   - component: {fileID: 3183506155082161892}
   - component: {fileID: 6552325207106974492}
+  - component: {fileID: 1684359323776728611}
   m_Layer: 0
   m_Name: Meathead
   m_TagString: Untagged
@@ -201,6 +202,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 0
   input: {fileID: 0}
+  OtherPlayer: {fileID: 0}
+  Swapping: 0
+  SwapOnCooldown: 0
+  Killer: 0
+  combover: {fileID: 0}
 --- !u!195 &3183506155082161892
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -244,6 +250,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &1684359323776728611
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4329442206600927829}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: df96c366a2249c147ab6d8ec53aade73, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5484437316909782236
 GameObject:
   m_ObjectHideFlags: 0

@@ -668,6 +668,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FlipRight: 0
+  BodySpotting:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!65 &1297621647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -750,7 +753,7 @@ GameObject:
   - component: {fileID: 1458881695}
   - component: {fileID: 1458881694}
   - component: {fileID: 1458881693}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4825,6 +4828,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FlipRight: 0
+  BodySpotting:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &1655761563
 Transform:
   m_ObjectHideFlags: 0
@@ -5494,7 +5500,7 @@ GameObject:
   - component: {fileID: 2137750283}
   - component: {fileID: 2137750282}
   - component: {fileID: 2137750281}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

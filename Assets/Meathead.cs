@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Meathead : Player
 {
+    public Combover combover;
     private new void Start()
     {
         base.Start();
-        MovementSpeed = 1;
+        MovementSpeed = 2;
+        OtherPlayer = FindAnyObjectByType<Combover>();
+        OtherPlayer.OtherPlayer = this;
+        Killer = true;
     }
 }
