@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-        print(name + "Attacked");
+        print(name + " Attacked");
         if(!StabCollider.enabled)
         {
             StartCoroutine(Stab());

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,9 @@ public class NPC : MonoBehaviour
     Animator Animator;
 
     bool IsDead;
+    SphereCollider DeathCall;
+
+    public LayerMask BodySpotting;
     enum FiniteState { Idle, Investigate };
     FiniteState Behavior;
     // Start is called before the first frame update
@@ -23,6 +27,8 @@ public class NPC : MonoBehaviour
         Sprite = GetComponentInChildren<SpriteRenderer>();
         SpriteTransform = Sprite.transform;
         Animator = GetComponent<Animator>();
+
+        DeathCall = GetComponent<SphereCollider>();
     }
     private void FixedUpdate()
     {
@@ -47,6 +53,15 @@ public class NPC : MonoBehaviour
     {
         Animator.SetTrigger("Kill");
         Agent.enabled = false;
+        IsDead = true;
+        StartCoroutine(Die());
+    }
+
+    public IEnumerator Die()
+    {
+        DeathCall.enabled = true;
+        yield return new WaitForSeconds(.2f);
+        DeathCall.enabled = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,11 +76,13 @@ public class NPC : MonoBehaviour
             }
             else if (other.name.Contains("NPC"))
             {
-                transform.LookAt(other.transform);
                 RaycastHit hit;
                 Physics.Raycast(transform.position, other.transform.position - transform.position, out hit, 10);
-                if (hit.collider == other)
+                Debug.DrawLine(transform.position, hit.point, Color.red,5);
+                NPC NPC = hit.collider.GetComponent<NPC>();
+                if (NPC != null && NPC.IsDead) 
                 {
+                    transform.LookAt(other.transform);
                     print("Spotted");
                 }
             }
