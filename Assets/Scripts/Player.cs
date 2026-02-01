@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class Player : MonoBehaviour
 {
-    Vector2 MovementVector;
+    protected Vector2 MovementVector;
     public float MovementSpeed;
     public PlayerInput input;
-    private Transform SpriteTransform;
+    protected Transform SpriteTransform;
     private SphereCollider YellCollider;
     private BoxCollider StabCollider;
 
@@ -18,9 +19,14 @@ public class Player : MonoBehaviour
     public bool Swapping;
     public bool SwapOnCooldown;
 
-    public bool Killer;
+    public bool IsKiller;
     Animator Animator;
     ParticleSystem ParticleSystem;
+
+    protected NavMeshAgent MeshAgent;
+
+    public static Transform KillerTransform;
+    public static bool StabReady;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -28,10 +34,13 @@ public class Player : MonoBehaviour
         MovementVector = Vector2.zero;
         SpriteTransform = GetComponentInChildren<SpriteRenderer>().transform;
         YellCollider = GetComponent<SphereCollider>();
-        StabCollider = GetComponentInChildren<BoxCollider>();
+        StabCollider = transform.GetChild(1).GetComponentInChildren<BoxCollider>();
         StabCollider.enabled = false;
         Animator = GetComponent<Animator>();
         ParticleSystem = GetComponent<ParticleSystem>();
+        MeshAgent = GetComponent<NavMeshAgent>();
+        SpriteTransform.eulerAngles = new Vector3(0, 180, 0);
+        Player.StabReady = true;
     }
 
     // Update is called once per frame
@@ -59,7 +68,7 @@ public class Player : MonoBehaviour
             MovementVector = Vector2.zero;
     }
 
-    public void OnYell(InputValue value)
+    public void OnEast(InputValue value)
     {
         print(name + " Yelled");
         if (!YellCollider.enabled)
@@ -73,13 +82,13 @@ public class Player : MonoBehaviour
         YellCollider.enabled = false;
     }
 
-    public void OnAttack(InputValue value)
+    public void OnWest(InputValue value)
     {
-        if (Killer)
+        if (IsKiller)
         {
-            print(name + " Attacked");
-            if (!StabCollider.enabled)
+            if (StabReady)
             {
+                print(name + " Attacked");
                 StartCoroutine(Stab());
             }
         }
@@ -87,12 +96,15 @@ public class Player : MonoBehaviour
 
     public IEnumerator Stab()
     {
+        StabReady = false;
         StabCollider.enabled = true;
         yield return new WaitForSeconds(.2f);
         StabCollider.enabled = false;
+        yield return new WaitForSeconds(.3f);
+        StabReady = true;
     }
 
-    public void OnSwap(InputValue value)
+    public void OnNorth(InputValue value)
     {
         if (OtherPlayer != null && !SwapOnCooldown)
         {
@@ -108,10 +120,11 @@ public class Player : MonoBehaviour
     public void Swap()
     {
         Swapping = false;
-        Killer = !Killer;
-        if(Killer)
+        IsKiller = !IsKiller;
+        if(IsKiller)
         {
             Animator.SetTrigger("Killer");
+            KillerTransform = transform;
         }
         else
         {
@@ -119,7 +132,7 @@ public class Player : MonoBehaviour
         }
         SwapOnCooldown = true;
         ParticleSystem.Play();
-        Invoke("SwapCooldownDone", 5);
+        Invoke("SwapCooldownDone", 1.5f);
     }
 
     public void SwapCooldownDone()

@@ -95,7 +95,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7756385011941587102}
   - component: {fileID: 1389647343158859163}
-  - component: {fileID: 1646670051042380322}
   m_Layer: 0
   m_Name: StabBox
   m_TagString: Untagged
@@ -137,20 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.32984418, y: 0.45622557, z: 0.9999999}
+  m_Size: {x: 0.32984418, y: 0.45622557, z: 0.46}
   m_Center: {x: -0.27702668, y: -0.03061391, z: 0}
---- !u!114 &1646670051042380322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2764812748624951582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f059a466e7d1e44399b701a088fd37e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3313027017934971988
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,11 +149,11 @@ GameObject:
   - component: {fileID: 3673511118434109830}
   - component: {fileID: 5874521267334150302}
   - component: {fileID: 8094047402423988276}
-  - component: {fileID: 1427370737023612703}
   - component: {fileID: 76548674414559205}
   - component: {fileID: 8317335056039242143}
   - component: {fileID: 4259457466603376863}
-  m_Layer: 0
+  - component: {fileID: 6793972029462020630}
+  m_Layer: 3
   m_Name: Combover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,8 +194,9 @@ MonoBehaviour:
   OtherPlayer: {fileID: 0}
   Swapping: 0
   SwapOnCooldown: 0
-  Killer: 0
-  meathead: {fileID: 0}
+  IsKiller: 0
+  IsVenting: 0
+  Sprite: {fileID: 0}
 --- !u!195 &8094047402423988276
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -231,27 +219,6 @@ NavMeshAgent:
   m_BaseOffset: 0.3
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!135 &1427370737023612703
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3313027017934971988}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &76548674414559205
 Animator:
   serializedVersion: 5
@@ -461,8 +428,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minMaxState: 2
+      minColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -5070,6 +5037,27 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &6793972029462020630
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3313027017934971988}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: -0.02999997, z: -0.080000035}
 --- !u!1 &3505788599051969850
 GameObject:
   m_ObjectHideFlags: 0

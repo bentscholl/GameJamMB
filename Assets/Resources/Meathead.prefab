@@ -95,7 +95,6 @@ GameObject:
   m_Component:
   - component: {fileID: 585983056411048327}
   - component: {fileID: 4083250584350844196}
-  - component: {fileID: 1117555716671486168}
   m_Layer: 0
   m_Name: StabBox
   m_TagString: Untagged
@@ -137,20 +136,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.43579075, y: 0.45622557, z: 0.9999999}
+  m_Size: {x: 0.43579075, y: 0.45622557, z: 0.46}
   m_Center: {x: -0.48395342, y: -0.03061391, z: 0}
---- !u!114 &1117555716671486168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3942735290566865314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f059a466e7d1e44399b701a088fd37e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4329442206600927829
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,11 +149,11 @@ GameObject:
   - component: {fileID: 7019340885505753288}
   - component: {fileID: 2089907229766417315}
   - component: {fileID: 3183506155082161892}
-  - component: {fileID: 6552325207106974492}
   - component: {fileID: 1684359323776728611}
   - component: {fileID: -671901648697489535}
   - component: {fileID: 7509862497647705679}
-  m_Layer: 0
+  - component: {fileID: 6677315649666517699}
+  m_Layer: 3
   m_Name: Meathead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,8 +194,7 @@ MonoBehaviour:
   OtherPlayer: {fileID: 0}
   Swapping: 0
   SwapOnCooldown: 0
-  Killer: 0
-  combover: {fileID: 0}
+  IsKiller: 0
 --- !u!195 &3183506155082161892
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -231,27 +217,6 @@ NavMeshAgent:
   m_BaseOffset: 0.3
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!135 &6552325207106974492
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4329442206600927829}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1684359323776728611
 Animator:
   serializedVersion: 5
@@ -535,8 +500,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 1, b: 1, a: 1}
+      minMaxState: 2
+      minColor: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -5070,6 +5035,27 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!65 &6677315649666517699
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4329442206600927829}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Center: {x: 0, y: 0.17, z: -0.080000035}
 --- !u!1 &5484437316909782236
 GameObject:
   m_ObjectHideFlags: 0
