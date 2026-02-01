@@ -63,11 +63,7 @@ public class Combover : Player
 
     public new void OnEast(InputValue value)
     {
-        if (!IsVenting)
-        {
-            base.OnEast(value);
-        }
-        else if (Vent.Vents.Count >= 3)
+        if (Vent.Vents.Count >= 3)
         {
             MoveVents(2);
         }
@@ -108,7 +104,6 @@ public class Combover : Player
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
-            print(hit.collider.name);
             if (hit.collider && hit.collider.name.Contains("Vent"))
             {
                 Vent = hit.collider.GetComponent<Vent>();
