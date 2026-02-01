@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public static bool StabReady;
 
     static bool QuitProgress;
+    
     // Start is called before the first frame update
     protected void Start()
     {
