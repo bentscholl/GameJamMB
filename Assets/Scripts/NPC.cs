@@ -74,6 +74,7 @@ public class NPC : MonoBehaviour
         Agent.Warp(location);
 
         Patience = Random.Range(10, 50);
+        Boredom = 10000;
 
     }
     private void FixedUpdate()
@@ -94,6 +95,7 @@ public class NPC : MonoBehaviour
             {
                 Agent.destination = Escape;
                 NPCsEscaped++;
+                GameManager.Money -= 35000;
                 Destroy(this.gameObject);
             }
             else if (Behavior == FiniteState.Idle)
@@ -126,7 +128,6 @@ public class NPC : MonoBehaviour
                             Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
                             Agent.SetDestination(location);
                             Boredom = 0;
-                            Behavior = FiniteState.Travel;
                         }
                         else
                         {
@@ -134,6 +135,7 @@ public class NPC : MonoBehaviour
                             Agent.SetDestination(location);
                             Boredom = 0;
                         }
+                        Behavior = FiniteState.Travel;
                     }
                 }
             }
@@ -194,6 +196,10 @@ public class NPC : MonoBehaviour
                 if (player.IsKiller && Suspicion < 100)
                 {
                     Suspicion += (4.5f - Vector3.Distance(transform.position, position));
+                    if(Suspicion >= 100)
+                    {
+                        GameManager.Money -= 10000;
+                    }
                     return;
                 }
                 else if(!player.IsKiller && Behavior == FiniteState.Idle)
@@ -227,6 +233,7 @@ public class NPC : MonoBehaviour
     {
         MyRoom.Residents--;
         NPCsKilled++;
+        GameManager.Money += 35000;
         Splatter.Play();
         name = "Corpse";
         yield return new WaitForSeconds(.3f);
@@ -270,6 +277,7 @@ public class NPC : MonoBehaviour
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead"))
             {
                 Suspicion = 100;
+                GameManager.Money -= 25000;
             }
         }
     }

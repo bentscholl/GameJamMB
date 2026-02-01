@@ -108,6 +108,7 @@ public class Combover : Player
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
+            print(hit.collider.name);
             if (hit.collider && hit.collider.name.Contains("Vent"))
             {
                 Vent = hit.collider.GetComponent<Vent>();
