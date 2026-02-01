@@ -56,7 +56,7 @@ public class PlayerJoin : MonoBehaviour
         yield return new WaitForSeconds(1);
         StartText.text = "";
         yield return new WaitForSeconds(.7f);
-        StartPanel.SetActive(false);
+        StartPanel.GetComponent<Animator>().SetTrigger("Start");
         Meathead.Instance.enabled = true;
         Combover.Instance.enabled = true;
     }
