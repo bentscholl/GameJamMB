@@ -14,20 +14,20 @@ public class Vent : MonoBehaviour
     {
         GameObject ArrowTemplate = (GameObject)Resources.Load("Arrow");
         ArrowParent = transform.GetChild(0);
-        char[] Letters = { 'X', 'Y', 'B' };
+        Color[] Colors = { Color.blue, Color.yellow, Color.red };
         int count = 0;
         foreach (var vent in Vents)
         {
             GameObject Arrow = Instantiate(ArrowTemplate, ArrowParent);
             Arrow.transform.LookAt(vent.transform.position, Vector3.up);
             Arrow.transform.Translate(0, 0, 1);
-            TextMeshPro Indicator = Arrow.GetComponentInChildren<TextMeshPro>();
-            Indicator.text = Letters[count++].ToString();
+            SpriteRenderer Indicator = Arrow.GetComponent<SpriteRenderer>();
+            Indicator.color = Colors[count++];
             Vector3 Direction = vent.transform.position - transform.position;
             ZAngle = Mathf.Atan2(Direction.z, Direction.x) * Mathf.Rad2Deg;
             float rad = Mathf.Atan2(Direction.z, Direction.x);
             Arrow.transform.rotation = Quaternion.Euler(new Vector3(0, 0, ZAngle - 90));
-            Indicator.transform.eulerAngles = new Vector3(0, 0, -(ZAngle - 90));
+            //Indicator.transform.eulerAngles = new Vector3(0, 0, -(ZAngle - 90));
 
         }
         ToggleArrows(false);

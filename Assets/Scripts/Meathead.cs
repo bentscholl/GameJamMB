@@ -17,13 +17,14 @@ public class Meathead : Player
         MovementSpeed = 2;
         OtherPlayer = FindAnyObjectByType<Combover>();
         OtherPlayer.OtherPlayer = this;
-        MeshAgent.Warp(new Vector3(-15, 1, 9));
+        MeshAgent.Warp(new Vector3(-15, 1, 47));
     }
 
     private void FixedUpdate()
     {
         if (IsCarrying)
         {
+
             if (SpriteTransform.eulerAngles.y != 0)
             {
                 CarriedSprite.flipX = true;
@@ -35,6 +36,14 @@ public class Meathead : Player
         }
     }
 
+    public new void OnWest(InputValue value)
+    {
+        if(!IsCarrying)
+        {
+            base.OnWest(value);
+        }
+    }    
+
     public void OnSouth(InputValue value)
     {
         if (!IsCarrying && IsKiller)
@@ -44,6 +53,7 @@ public class Meathead : Player
             if (hit.collider && hit.collider.name.Contains("Corpse"))
             {
                 CarriedTransform = hit.collider.transform;
+                CarriedTransform.GetComponent<NPC>().IsRelocated = false;
                 CarriedSprite = CarriedTransform.GetComponentInChildren<SpriteRenderer>();
                 CarriedTransform.parent = transform;
                 CarriedTransform.localPosition = new Vector3(.05f, .2f, -.1f);
@@ -52,7 +62,11 @@ public class Meathead : Player
         }
         else if(IsCarrying)
         {
-            CarriedTransform.localPosition = new Vector3(-SpriteTransform.right.x*.2f, .1f, -.15f);
+            RaycastHit hit;
+            Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
+
+            CarriedTransform.GetComponent<NPC>().IsRelocated = true;
+            CarriedTransform.localPosition = new Vector3(-SpriteTransform.right.x * .2f, 0, -.05f);
             CarriedTransform.parent = null;
             CarriedSprite = null;
             CarriedTransform = null;

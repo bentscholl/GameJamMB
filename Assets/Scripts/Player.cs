@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public bool SwapOnCooldown;
 
     public bool IsKiller;
-    Animator Animator;
+    protected Animator Animator;
     ParticleSystem ParticleSystem;
 
     protected NavMeshAgent MeshAgent;

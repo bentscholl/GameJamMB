@@ -32,7 +32,6 @@ public class PlayerJoin : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        Image ScreenSplit = GameObject.Find("ScreenSplit").GetComponent<Image>();
         GameObject StartPanel = GameObject.Find("StartPanel");
         TextMeshProUGUI StartText = StartPanel.GetComponentInChildren<TextMeshProUGUI>();
         Animator animator = GameObject.Find("Mask").GetComponent<Animator>();
@@ -57,7 +56,6 @@ public class PlayerJoin : MonoBehaviour
         yield return new WaitForSeconds(1);
         StartText.text = "";
         yield return new WaitForSeconds(.7f);
-        ScreenSplit.enabled = true;
         StartPanel.SetActive(false);
         Meathead.Instance.enabled = true;
         Combover.Instance.enabled = true;

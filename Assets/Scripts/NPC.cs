@@ -17,9 +17,11 @@ public class NPC : MonoBehaviour
     Animator Animator;
 
     bool IsDead;
+    public bool IsRelocated;
     SphereCollider DeathCall;
     SphereCollider CorpseRadius;
     ParticleSystem Splatter;
+    static bool RecentDeath;
 
     public LayerMask BodySpotting;
     public LayerMask KillerSpotting;
@@ -37,6 +39,7 @@ public class NPC : MonoBehaviour
     Room Bathroom;
 
     public static int NPCsEscaped;
+    public static int NPCsKilled;
 
     [SerializeField]
     private float Patience;
@@ -80,10 +83,11 @@ public class NPC : MonoBehaviour
 
             if (Suspicion >= 100 && Behavior != FiniteState.Escape)
             {
+                MyRoom.Residents--;
                 Invoke("SetDespawnable", 1);
                 Agent.destination = Escape;
                 Behavior = FiniteState.Escape;
-                Agent.speed *= 1.5f;
+                Agent.speed *= 1.8f;
             }
 
             if (Despawnable && Behavior == FiniteState.Escape && Agent.remainingDistance > 0 && Agent.remainingDistance < 1.1f)
@@ -221,11 +225,14 @@ public class NPC : MonoBehaviour
 
     public IEnumerator Die()
     {
+        MyRoom.Residents--;
+        NPCsKilled++;
         Splatter.Play();
         name = "Corpse";
         yield return new WaitForSeconds(.3f);
         DeathCall.enabled = true;
         CorpseRadius.enabled = true;
+        RecentDeath = false;
         yield return new WaitForSeconds(.2f);
         DeathCall.enabled = false;
     }
@@ -243,8 +250,9 @@ public class NPC : MonoBehaviour
                 }
                 
             }
-            if (other.name.Contains("Stab"))
+            if (other.name.Contains("Stab") && !RecentDeath)
             {
+                RecentDeath = true;
                 Stab();
             }
         }

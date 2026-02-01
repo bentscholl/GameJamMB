@@ -12,6 +12,7 @@ public class Combover : Player
     public bool IsVenting;
     Vent Vent;
     public GameObject Sprite;
+    BoxCollider BoxCollider;
 
     bool panning;
     Camera Camera;
@@ -20,9 +21,10 @@ public class Combover : Player
         base.Start();
         Instance = this;
         MovementSpeed = 2.5f;
-        MeshAgent.Warp(new Vector3(-15, 1, 7));
+        MeshAgent.Warp(new Vector3(-15, 1, 46));
         Sprite = transform.GetChild(1).gameObject;
         Camera = GetComponentInChildren<Camera>();
+        BoxCollider = GetComponent<BoxCollider>();
         this.enabled = false;
     }
 
@@ -111,7 +113,9 @@ public class Combover : Player
                 Vent = hit.collider.GetComponent<Vent>();
                 IsVenting = true;
                 MovementVector = Vector2.zero;
+                Animator.SetBool("Walking", false);
                 Sprite.SetActive(false);
+                BoxCollider.enabled = false;
                 Vent.ToggleArrows(true);
             }
         }
@@ -120,6 +124,7 @@ public class Combover : Player
             Vent.ToggleArrows(false);
             Vent = null;
             Sprite.SetActive(true);
+            BoxCollider.enabled = true;
             IsVenting = false;
         }
     }
