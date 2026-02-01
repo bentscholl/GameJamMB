@@ -207,7 +207,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""afc58607-d5dc-4d4f-97b1-07020fae32dd"",
                     ""path"": ""<Gamepad>/select"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Quit"",

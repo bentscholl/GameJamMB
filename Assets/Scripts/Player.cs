@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static UnityEngine.InputSystem.InputAction;
 
 public class Player : MonoBehaviour
@@ -28,8 +30,6 @@ public class Player : MonoBehaviour
     public static Transform KillerTransform;
     public static bool StabReady;
 
-    static bool QuitProgress;
-    
     // Start is called before the first frame update
     protected void Start()
     {
@@ -75,12 +75,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    /*
     public void OnEast(InputValue value)
     {
         print(name + " Yelled");
         if (!YellCollider.enabled)
             StartCoroutine(Yell());
-    }
+    }*/
 
     public IEnumerator Yell()
     {

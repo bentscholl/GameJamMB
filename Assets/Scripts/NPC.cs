@@ -25,7 +25,7 @@ public class NPC : MonoBehaviour
 
     public LayerMask BodySpotting;
     public LayerMask KillerSpotting;
-    enum FiniteState { Idle, Travel, Investigate, Escape };
+    enum FiniteState { Idle, Travel, Investigate, Escape, Dead };
     [SerializeField]
     private FiniteState Behavior;
 

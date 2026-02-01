@@ -1960,7 +1960,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 340910560}
   m_SourcePrefab: {fileID: 100100000, guid: ff79949e71065ff4894e863bd882d6d7, type: 3}
 --- !u!1 &329742562
 GameObject:
@@ -2280,6 +2284,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016d4a9ff178572459121d6ccf643ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &340910555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 319771337}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &340910560
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340910555}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.187, y: 0.074, z: 0.187}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.051000003, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &344718880
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,6 +3565,28 @@ MonoBehaviour:
   Capacity: 5
   XVariation: 2.7
   ZVariation: 2.7
+--- !u!1 &584747537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1683782336}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &584747542
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584747537}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.187, y: 0.074, z: 0.187}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.051000003, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &617892873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3770,6 +3818,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e81de51c43c9b2a4ba47f57668828cb5, type: 3}
+--- !u!1 &670383609 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1376511592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &670383614
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670383609}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.187, y: 0.074, z: 0.187}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.051000003, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &670566562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4537,7 +4607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Residents: 0
   Capacity: 8
-  XVariation: 2.7
+  XVariation: 4
   ZVariation: 5
 --- !u!4 &788001637 stripped
 Transform:
@@ -8266,7 +8336,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 670383614}
   m_SourcePrefab: {fileID: 100100000, guid: ff79949e71065ff4894e863bd882d6d7, type: 3}
 --- !u!1 &1382240971
 GameObject:
@@ -13800,7 +13874,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2821775604844302078, guid: ff79949e71065ff4894e863bd882d6d7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 584747542}
   m_SourcePrefab: {fileID: 100100000, guid: ff79949e71065ff4894e863bd882d6d7, type: 3}
 --- !u!1 &1698645623
 GameObject:
@@ -13813,9 +13891,8 @@ GameObject:
   - component: {fileID: 1698645624}
   - component: {fileID: 1698645627}
   - component: {fileID: 1698645626}
-  - component: {fileID: 1698645625}
   m_Layer: 5
-  m_Name: Press Start (1)
+  m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13840,27 +13917,6 @@ RectTransform:
   m_AnchoredPosition: {x: -294, y: 193}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &1698645625
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698645623}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8cf78973d1ab9bb46b51d0939a8e8250, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1698645626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16677,6 +16733,7 @@ GameObject:
   - component: {fileID: 1798200664}
   - component: {fileID: 1798200665}
   - component: {fileID: 1798200666}
+  - component: {fileID: 1798200667}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -16762,6 +16819,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b486dd4d5567da5429c10fb749b7e47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1798200667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798200663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4854fdc0bde1d5d4092e68854c214e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1802120847

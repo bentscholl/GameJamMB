@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     bool GameOver;
     int StartingTotal;
-    public static int Money = -9999990;
+    public static int Money = 0;
     void Awake()
     {
         Total = GameObject.Find("Total").GetComponentInChildren<TextMeshProUGUI>();
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         }
         for(int i = 0; i <= 150; i++)
         {
-            MoneyCounter.text = prefix + ((int)Mathf.Lerp(0,Money,i/150f));
+            MoneyCounter.text = prefix + Mathf.Abs((int)Mathf.Lerp(0,Money,i/150f));
             yield return new WaitForFixedUpdate();
         }
         Time.timeScale = 1;

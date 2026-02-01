@@ -10,6 +10,8 @@ public class Meathead : Player
     bool IsCarrying;
     SpriteRenderer CarriedSprite;
     Transform CarriedTransform;
+
+    GameObject Corpse;
     public new void Start()
     {
         base.Start();
@@ -18,6 +20,8 @@ public class Meathead : Player
         OtherPlayer = FindAnyObjectByType<Combover>();
         OtherPlayer.OtherPlayer = this;
         MeshAgent.Warp(new Vector3(-15, 1, 47));
+        Corpse = transform.GetChild(1).GetChild(1).gameObject;
+        Corpse.SetActive(false);
     }
 
     private void FixedUpdate()
@@ -55,9 +59,11 @@ public class Meathead : Player
                 CarriedTransform = hit.collider.transform;
                 CarriedTransform.GetComponent<NPC>().IsRelocated = false;
                 CarriedSprite = CarriedTransform.GetComponentInChildren<SpriteRenderer>();
+                CarriedSprite.enabled = false;
                 CarriedTransform.parent = transform;
                 CarriedTransform.localPosition = new Vector3(.05f, .2f, -.1f);
                 IsCarrying = true;
+                Corpse.SetActive(true);
             }
         }
         else if(IsCarrying)
@@ -68,9 +74,19 @@ public class Meathead : Player
             CarriedTransform.GetComponent<NPC>().IsRelocated = true;
             CarriedTransform.localPosition = new Vector3(-SpriteTransform.right.x * .2f, 0, -.05f);
             CarriedTransform.parent = null;
+            CarriedSprite.enabled = true;
             CarriedSprite = null;
             CarriedTransform = null;
             IsCarrying = false;
+            Corpse.SetActive(false);
+        }
+    }
+
+    public new void OnNorth(InputValue value)
+    {
+        if (!IsCarrying)
+        {
+            base.OnNorth(value);
         }
     }
 }
