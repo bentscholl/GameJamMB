@@ -60,12 +60,16 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        if (value.Get() != null)
+        if (value.Get() != null && StabReady)
         {
             MovementVector = (Vector2)value.Get();
+            Animator.SetBool("Walking", true);
         }
         else
+        {
             MovementVector = Vector2.zero;
+            Animator.SetBool("Walking", false);
+        }
     }
 
     public void OnEast(InputValue value)
@@ -88,6 +92,7 @@ public class Player : MonoBehaviour
         {
             if (StabReady)
             {
+                Animator.SetTrigger("Attack");
                 print(name + " Attacked");
                 StartCoroutine(Stab());
             }
@@ -97,10 +102,11 @@ public class Player : MonoBehaviour
     public IEnumerator Stab()
     {
         StabReady = false;
+        MovementVector = Vector2.zero;
         StabCollider.enabled = true;
         yield return new WaitForSeconds(.2f);
         StabCollider.enabled = false;
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.4f);
         StabReady = true;
     }
 
@@ -109,7 +115,7 @@ public class Player : MonoBehaviour
         if (OtherPlayer != null && !SwapOnCooldown)
         {
             Swapping = value.isPressed;
-            if (OtherPlayer.Swapping && Swapping && Vector3.Distance(transform.position, OtherPlayer.transform.position) < 4)
+            if (OtherPlayer.Swapping && Swapping && Vector3.Distance(transform.position, OtherPlayer.transform.position) < 2)
             {
                 Swap();
                 OtherPlayer.Swap();

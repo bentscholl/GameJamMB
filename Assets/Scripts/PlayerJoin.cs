@@ -15,15 +15,17 @@ public class PlayerJoin : MonoBehaviour
         input = GetComponent<PlayerInput>();
         if (input.playerIndex == 0)
         {
-            Image Combover = GameObject.Find("ComboverMenu").GetComponent<Image>();
-            Combover.color = Color.white;
+            Image ComboverSprite = GameObject.Find("ComboverMenu").GetComponent<Image>();
+            ComboverSprite.color = Color.white;
             Instantiate(Resources.Load("Combover"), transform);
         }
         else
         {
-            Image Meathead = GameObject.Find("MeatheadMenu").GetComponent<Image>();
-            Meathead.color = Color.white;
-            Instantiate(Resources.Load("Meathead"), transform);
+            Image MeatheadSprite = GameObject.Find("MeatheadMenu").GetComponent<Image>();
+            MeatheadSprite.color = Color.white;
+            GameObject MeatheadObject = (GameObject) Instantiate(Resources.Load("Meathead"), transform);
+            MeatheadObject.GetComponent<Meathead>().Start();
+            Meathead.Instance.enabled = false;
             StartCoroutine(StartGame());
         }
     }
@@ -33,6 +35,20 @@ public class PlayerJoin : MonoBehaviour
         Image ScreenSplit = GameObject.Find("ScreenSplit").GetComponent<Image>();
         GameObject StartPanel = GameObject.Find("StartPanel");
         TextMeshProUGUI StartText = StartPanel.GetComponentInChildren<TextMeshProUGUI>();
+        Animator animator = GameObject.Find("Mask").GetComponent<Animator>();
+        int KillerIndex = Random.Range(0, 2);
+        if (KillerIndex == 1)
+        {
+            animator.SetTrigger("Meat");
+            Meathead.Instance.Swap();
+        }
+        else
+        {
+            animator.SetTrigger("Comb");
+            Combover.Instance.Swap();
+        }
+        StartText.GetComponent<Animator>().enabled = false;
+        StartText.enabled = true;
         StartText.text = "3";
         yield return new WaitForSeconds(1);
         StartText.text = "2";
@@ -40,7 +56,7 @@ public class PlayerJoin : MonoBehaviour
         StartText.text = "1";
         yield return new WaitForSeconds(1);
         StartText.text = "";
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.7f);
         ScreenSplit.enabled = true;
         StartPanel.SetActive(false);
         Meathead.Instance.enabled = true;
