@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public static AudioClip Countdown;
     public static AudioClip Die;
     public static AudioClip Fall;
+    public static AudioClip Leave;
 
     TextMeshProUGUI Total;
     TextMeshProUGUI Kills;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
         PlayerJoin = Resources.Load<AudioClip>("SFX/Join");
         Fall = Resources.Load<AudioClip>("SFX/Fall");
         Die = Resources.Load<AudioClip>("SFX/Die");
+        Leave = Resources.Load<AudioClip>("SFX/Leave");
         //StartCoroutine(EndGame());
     }
 

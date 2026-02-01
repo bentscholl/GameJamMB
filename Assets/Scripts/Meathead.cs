@@ -58,7 +58,6 @@ public class Meathead : Player
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
-
             CarriedTransform.GetComponent<NPC>().IsRelocated = true;
             CarriedTransform.localPosition = new Vector3(-SpriteTransform.right.x * .2f, 0, -.05f);
             CarriedTransform.parent = null;

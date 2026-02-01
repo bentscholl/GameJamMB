@@ -14,6 +14,7 @@ public class Window : MonoBehaviour
             if(other.GetComponent<NPC>().IsRelocated)
             {
                 GameManager.AudioSource.PlayOneShot(GameManager.Fall);
+                Destroy(other.gameObject);
             }
         }
     }

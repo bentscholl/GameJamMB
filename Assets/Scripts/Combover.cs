@@ -16,6 +16,8 @@ public class Combover : Player
 
     bool panning;
     Camera Camera;
+
+    AudioClip VentFX;
     private new void Start()
     {
         base.Start();
@@ -25,6 +27,7 @@ public class Combover : Player
         Sprite = transform.GetChild(1).gameObject;
         Camera = GetComponentInChildren<Camera>();
         BoxCollider = GetComponent<BoxCollider>();
+        VentFX = Resources.Load<AudioClip>("Vent");
         this.enabled = false;
     }
 

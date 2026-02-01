@@ -116,6 +116,7 @@ public class NPC : MonoBehaviour
             {
                 Agent.destination = Escape;
                 NPCsEscaped++;
+                GameManager.AudioSource.PlayOneShot(GameManager.Leave);
                 GameManager.Money -= 35000;
                 Destroy(this.gameObject);
             }
