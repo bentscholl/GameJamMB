@@ -115,7 +115,7 @@ public class Combover : Player
                 Vent.ToggleArrows(true);
             }
         }
-        else if (!panning)
+        else if (!panning && IsVenting)
         {
             Vent.ToggleArrows(false);
             Vent = null;

@@ -12,6 +12,7 @@ public class PlayerJoin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.AudioSource.PlayOneShot(GameManager.PlayerJoin);
         input = GetComponent<PlayerInput>();
         if (input.playerIndex == 0)
         {
@@ -48,11 +49,15 @@ public class PlayerJoin : MonoBehaviour
         }
         StartText.GetComponent<Animator>().enabled = false;
         StartText.enabled = true;
+        yield return new WaitForSeconds(.2f);
         StartText.text = "3";
+        GameManager.AudioSource.PlayOneShot(GameManager.Countdown);
         yield return new WaitForSeconds(1);
         StartText.text = "2";
+        GameManager.AudioSource.PlayOneShot(GameManager.Countdown);
         yield return new WaitForSeconds(1);
         StartText.text = "1";
+        GameManager.AudioSource.PlayOneShot(GameManager.Countdown);
         yield return new WaitForSeconds(1);
         StartText.text = "";
         yield return new WaitForSeconds(.7f);

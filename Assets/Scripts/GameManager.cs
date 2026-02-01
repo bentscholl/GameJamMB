@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    GameManager Instance;
+
+    public static AudioSource AudioSource;
+    public static AudioClip PlayerJoin;
+    public static AudioClip Countdown;
+    public static AudioClip Die;
+    public static AudioClip Fall;
+
     TextMeshProUGUI Total;
     TextMeshProUGUI Kills;
     TextMeshProUGUI Lost;
@@ -27,6 +36,12 @@ public class GameManager : MonoBehaviour
         EndPanel = GameObject.Find("EndPanel");
         EndAnimator = EndPanel.GetComponent<Animator>();
         MoneyCounter = GameObject.Find("Money").GetComponent<TextMeshProUGUI>();
+
+        AudioSource = gameObject.AddComponent<AudioSource>();
+        Countdown = Resources.Load<AudioClip>("SFX/Countdown");
+        PlayerJoin = Resources.Load<AudioClip>("SFX/Join");
+        Fall = Resources.Load<AudioClip>("SFX/Fall");
+        Die = Resources.Load<AudioClip>("SFX/Die");
         //StartCoroutine(EndGame());
     }
 
@@ -70,5 +85,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         Time.timeScale = 1;
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(0);
     }
 }

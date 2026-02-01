@@ -29,6 +29,11 @@ public class NPC : MonoBehaviour
     [SerializeField]
     private FiniteState Behavior;
 
+    private Transform SpriteParent;
+    private Transform Brows;
+    private GameObject SuspiciousBrow;
+    private GameObject ScaredBrow;
+
     public float Suspicion;
     private bool Despawnable; //Added to fix the fact that setting agent destination is async, sometimes prematurely escaping
     Vector3 Escape;
@@ -51,8 +56,6 @@ public class NPC : MonoBehaviour
     {
         Agent = GetComponent<NavMeshAgent>();
         Behavior = FiniteState.Idle;
-        Sprite = GetComponentInChildren<SpriteRenderer>();
-        SpriteTransform = Sprite.transform;
         Animator = GetComponent<Animator>();
 
         CorpseRadius = GetComponent<SphereCollider>();
@@ -76,11 +79,27 @@ public class NPC : MonoBehaviour
         Patience = Random.Range(10, 50);
         Boredom = 10000;
 
+        SpriteParent = transform.GetChild(0);
+        Brows = SpriteParent.transform.GetChild(0);
+        SuspiciousBrow = Brows.GetChild(0).gameObject;
+        ScaredBrow = Brows.GetChild(1).gameObject;
+
+        
+        SuspiciousBrow.SetActive(false);
+        ScaredBrow.SetActive(false);
     }
     private void FixedUpdate()
     {
         if (!IsDead)
         {
+            if(Agent.velocity.magnitude == 0)
+            {
+                Animator.SetBool("Walking", false);
+            }
+            else
+            {
+                Animator.SetBool("Walking", true);
+            }
 
             if (Suspicion >= 100 && Behavior != FiniteState.Escape)
             {
@@ -88,7 +107,9 @@ public class NPC : MonoBehaviour
                 Invoke("SetDespawnable", 1);
                 Agent.destination = Escape;
                 Behavior = FiniteState.Escape;
-                Agent.speed *= 1.8f;
+                SuspiciousBrow.SetActive(false);
+                ScaredBrow.SetActive(true);
+                Agent.speed *= 2f;
             }
 
             if (Despawnable && Behavior == FiniteState.Escape && Agent.remainingDistance > 0 && Agent.remainingDistance < 1.1f)
@@ -147,6 +168,7 @@ public class NPC : MonoBehaviour
                     Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
                     Agent.SetDestination(location);
                     Boredom = 0;
+                    SuspiciousBrow.SetActive(false);
                 }
             }
             else if (Behavior == FiniteState.Travel)
@@ -155,11 +177,16 @@ public class NPC : MonoBehaviour
                     Behavior = FiniteState.Idle;
             }
 
-            SpriteTransform.LookAt(SpriteTransform.position - new Vector3(0, 0, -1));
+            SpriteParent.LookAt(SpriteParent.position - new Vector3(0, 0, -1));
             if (Agent.desiredVelocity.x > 0)
-                Sprite.flipX = true;
+            {
+                SpriteParent.eulerAngles = new Vector3(0, 180, 0);
+            }
             else if (Agent.desiredVelocity.x < 0)
-                Sprite.flipX = false;
+            {
+                SpriteParent.eulerAngles = Vector3.zero;
+            }
+            Brows.localPosition = new Vector3(0, 0, -Brows.forward.z * .01f);
 
             if (Player.KillerTransform != null)
             {
@@ -221,6 +248,7 @@ public class NPC : MonoBehaviour
         Agent.enabled = false;
         gameObject.layer = LayerMask.NameToLayer("Dead");
         Animator.SetTrigger("Kill");
+        Brows.gameObject.SetActive(false);
         StartCoroutine(Die());
     }
 
@@ -235,6 +263,7 @@ public class NPC : MonoBehaviour
         NPCsKilled++;
         GameManager.Money += 35000;
         Splatter.Play();
+        GameManager.AudioSource.PlayOneShot(GameManager.Die);
         name = "Corpse";
         yield return new WaitForSeconds(.3f);
         DeathCall.enabled = true;
@@ -254,6 +283,7 @@ public class NPC : MonoBehaviour
                 {
                     Agent.SetDestination(other.transform.position);
                     Behavior = FiniteState.Investigate;
+                    SuspiciousBrow.SetActive(true);
                 }
                 
             }

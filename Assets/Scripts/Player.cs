@@ -30,6 +30,12 @@ public class Player : MonoBehaviour
     public static Transform KillerTransform;
     public static bool StabReady;
 
+    AudioClip StabFX;
+    AudioClip InteractFX;
+    AudioClip PoofFX;
+
+    AudioSource AudioSource;
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -44,6 +50,10 @@ public class Player : MonoBehaviour
         MeshAgent = GetComponent<NavMeshAgent>();
         SpriteTransform.eulerAngles = new Vector3(0, 180, 0);
         Player.StabReady = true;
+
+        AudioSource = gameObject.AddComponent<AudioSource>();
+        StabFX = Resources.Load<AudioClip>("SFX/Knife");
+        PoofFX = Resources.Load<AudioClip>("SFX/Poof");
     }
 
     // Update is called once per frame
@@ -108,6 +118,7 @@ public class Player : MonoBehaviour
         StabReady = false;
         MovementVector = Vector2.zero;
         StabCollider.enabled = true;
+        AudioSource.PlayOneShot(StabFX);
         yield return new WaitForSeconds(.2f);
         StabCollider.enabled = false;
         yield return new WaitForSeconds(.4f);
@@ -121,6 +132,7 @@ public class Player : MonoBehaviour
             Swapping = value.isPressed;
             if (OtherPlayer.Swapping && Swapping && Vector3.Distance(transform.position, OtherPlayer.transform.position) < 2)
             {
+                AudioSource.PlayOneShot(PoofFX);
                 Swap();
                 OtherPlayer.Swap();
             }

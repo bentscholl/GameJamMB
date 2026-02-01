@@ -26,18 +26,6 @@ public class Meathead : Player
 
     private void FixedUpdate()
     {
-        if (IsCarrying)
-        {
-
-            if (SpriteTransform.eulerAngles.y != 0)
-            {
-                CarriedSprite.flipX = true;
-            }
-            else
-            {
-                CarriedSprite.flipX = false;
-            }
-        }
     }
 
     public new void OnWest(InputValue value)
