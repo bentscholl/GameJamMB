@@ -1,10 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-
+using Random = UnityEngine.Random;
 public class NPC : MonoBehaviour
 {
     NavMeshAgent Agent;
@@ -21,14 +23,25 @@ public class NPC : MonoBehaviour
 
     public LayerMask BodySpotting;
     public LayerMask KillerSpotting;
-    enum FiniteState { Idle, Investigate, Escape };
-    FiniteState Behavior;
+    enum FiniteState { Idle, Travel, Investigate, Escape };
+    [SerializeField]
+    private FiniteState Behavior;
 
-    public int Suspicion;
-    public Vector3 Escape;
-    public Vector3[] Rooms;
+    public float Suspicion;
+    private bool Despawnable; //Added to fix the fact that setting agent destination is async, sometimes prematurely escaping
+    Vector3 Escape;
+    Room[] Rooms;
+
+    [SerializeField]
+    Room MyRoom;
+    Room Bathroom;
 
     public static int NPCsEscaped;
+
+    [SerializeField]
+    private float Patience;
+    [SerializeField]
+    private float Boredom;
 
     // Start is called before the first frame update
     void Start()
@@ -43,22 +56,97 @@ public class NPC : MonoBehaviour
         DeathCall = transform.GetChild(1).GetComponent<SphereCollider>();
         Splatter = GetComponent<ParticleSystem>();
         Escape = GameObject.Find("Exit").transform.position;
+
+        Rooms = GameObject.Find("Locales").GetComponentsInChildren<Room>();
+        MyRoom = Rooms[Random.Range(0,Rooms.Length)];
+        Bathroom = GameObject.Find("Bathroom").GetComponent<Room>();
+
+        while(MyRoom.Residents >= MyRoom.Capacity)
+        {
+            MyRoom = Rooms[Random.Range(0, Rooms.Length)];
+        }
+        MyRoom.Residents++;
+        Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation));
+        Agent.SetDestination(location);
+        Agent.Warp(location);
+
+        Patience = Random.Range(10, 50);
+
     }
     private void FixedUpdate()
     {
         if (!IsDead)
         {
+
             if (Suspicion >= 100 && Behavior != FiniteState.Escape)
             {
+                Invoke("SetDespawnable", 1);
                 Agent.destination = Escape;
                 Behavior = FiniteState.Escape;
                 Agent.speed *= 1.5f;
             }
 
-            if (Behavior == FiniteState.Escape && Agent.remainingDistance > 0 && Agent.remainingDistance < 1.1f)
+            if (Despawnable && Behavior == FiniteState.Escape && Agent.remainingDistance > 0 && Agent.remainingDistance < 1.1f)
             {
-                    NPCsEscaped++;
-                    Destroy(this.gameObject);
+                Agent.destination = Escape;
+                NPCsEscaped++;
+                Destroy(this.gameObject);
+            }
+            else if (Behavior == FiniteState.Idle)
+            {
+                Boredom+= .06f;
+                if(Boredom >= Patience)
+                {
+                    int i = Random.Range(0, 7);
+                    if (i == 0)
+                    {
+                        MyRoom.Residents--;
+                        MyRoom = Rooms[Random.Range(0, Rooms.Length)];
+                        while (MyRoom.Residents >= MyRoom.Capacity)
+                        {
+                            MyRoom = Rooms[Random.Range(0, Rooms.Length)];
+                        }
+                        MyRoom.Residents++;
+                        Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
+                        Agent.SetDestination(location);
+                        Boredom = 0;
+                        Behavior = FiniteState.Travel;
+                    }
+                    else
+                    {
+                        if (i == 1 && Bathroom.Residents == 0)
+                        {
+                            MyRoom.Residents--;
+                            MyRoom = Bathroom;
+                            MyRoom.Residents++;
+                            Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
+                            Agent.SetDestination(location);
+                            Boredom = 0;
+                            Behavior = FiniteState.Travel;
+                        }
+                        else
+                        {
+                            Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
+                            Agent.SetDestination(location);
+                            Boredom = 0;
+                        }
+                    }
+                }
+            }
+            else if (Behavior == FiniteState.Investigate)
+            {
+                if(Agent.remainingDistance < 1.5f)
+                {
+                    Behavior = FiniteState.Travel;
+                    Vector3 location = MyRoom.transform.position + new Vector3(Random.Range(-MyRoom.XVariation, MyRoom.XVariation), 0, Random.Range(-MyRoom.ZVariation, MyRoom.ZVariation + 1));
+                    Agent.SetDestination(location);
+                    Boredom = 0;
+                }
+            }
+            else if (Behavior == FiniteState.Travel)
+            {
+                if (Agent.remainingDistance < 2)
+                    Behavior = FiniteState.Idle;
             }
 
             SpriteTransform.LookAt(SpriteTransform.position - new Vector3(0, 0, -1));
@@ -69,35 +157,52 @@ public class NPC : MonoBehaviour
 
             if (Player.KillerTransform != null)
             {
-                RaycastHit hit;
-                Vector3 KillerPos = Player.KillerTransform.position;
-                Vector3 KillerDir = KillerPos - transform.position;
-                Physics.Raycast(transform.position, KillerDir, out hit, 7, KillerSpotting);
-                Player player;
-                if (hit.collider != null)
+                float DistanceMeathead = Vector3.Distance(transform.position,Meathead.Instance.transform.position);
+                float DistanceCombover = Vector3.Distance(transform.position, Combover.Instance.transform.position);
+
+                if (DistanceMeathead < 4.5f || DistanceCombover < 4.5f)
                 {
-                    //print(hit.collider.name);
-                    hit.collider.TryGetComponent<Player>(out player);
-                    if (player != null && player.IsKiller && Suspicion < 100)
-                    {
-                        Suspicion++;
-                        return;
-                    }
+                    CheckSurroundings(Meathead.Instance.transform.position);
+                    CheckSurroundings(Combover.Instance.transform.position);
                 }
-                if (Suspicion < 100 && Suspicion > 0)
+                else if (Suspicion < 100 && Suspicion > 0)
                 {
-                    Suspicion--;
+                    //Suspicion -= .5f;
+                    if (Suspicion < 0)
+                    { Suspicion = 0; }
                 }
             }
         }
     }
+
+    void CheckSurroundings(Vector3 position)
+    {
+        RaycastHit hit;
+        Vector3 PlayerDir = position - transform.position;
+        Physics.Raycast(transform.position, PlayerDir, out hit, 4, KillerSpotting);
+        Player player;
+        if (hit.collider != null)
+        {
+            //print(hit.collider.name);
+            hit.collider.TryGetComponent<Player>(out player);
+            if (player != null)
+            {
+                if (player.IsKiller && Suspicion < 100)
+                {
+                    Suspicion += (4.5f - Vector3.Distance(transform.position, position));
+                    return;
+                }
+                else if(!player.IsKiller && Behavior == FiniteState.Idle)
+                {
+                    Boredom += .25f;
+                }
+            }
+        }
+    }    
     // Update is called once per frame
     void Update()
     {
-        if(Behavior == FiniteState.Investigate)
-        {
-            //Agent
-        }
+        
     }
 
     public void Stab()
@@ -109,9 +214,15 @@ public class NPC : MonoBehaviour
         StartCoroutine(Die());
     }
 
+    private void SetDespawnable()
+    {
+        Despawnable = true;
+    }
+
     public IEnumerator Die()
     {
         Splatter.Play();
+        name = "Corpse";
         yield return new WaitForSeconds(.3f);
         DeathCall.enabled = true;
         CorpseRadius.enabled = true;
@@ -125,35 +236,33 @@ public class NPC : MonoBehaviour
         {
             if (Behavior != FiniteState.Escape)
             {
-                print(other.name);
                 if (other.name.Contains("Death"))
                 {
                     Agent.SetDestination(other.transform.position);
                     Behavior = FiniteState.Investigate;
                 }
-                else if (other.name.Contains("NPC"))
-                {
-                    RaycastHit hit;
-                    Vector3 Direction = other.transform.position - transform.position;
-                    Physics.Raycast(transform.position, Direction, out hit, 10, BodySpotting);
-                    Debug.DrawLine(transform.position, hit.point, Color.red, 5);
-                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead"))
-                    {
-                        if (Direction.x > 0)
-                            Sprite.flipX = true;
-                        else if (Direction.x < 0)
-                            Sprite.flipX = false;
-
-                        Suspicion = 100;
-                    }
-                }
+                
             }
             if (other.name.Contains("Stab"))
             {
-                print("help");
                 Stab();
             }
         }
         
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!IsDead && Behavior != FiniteState.Escape && other.name.Contains("Corpse"))
+        {
+            RaycastHit hit;
+            Vector3 Direction = other.transform.position - transform.position;
+            Physics.Raycast(transform.position, Direction, out hit, 10, BodySpotting);
+            Debug.DrawLine(transform.position, hit.point, Color.red, 7);
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead"))
+            {
+                Suspicion = 100;
+            }
+        }
     }
 }

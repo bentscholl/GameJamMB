@@ -51,7 +51,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 2
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5042837627311836888
 GameObject:
@@ -196,10 +196,12 @@ MonoBehaviour:
     m_Bits: 192
   KillerSpotting:
     serializedVersion: 2
-    m_Bits: 24
+    m_Bits: 72
+  Behavior: 0
   Suspicion: 0
-  Escape: {x: 0, y: 0, z: 0}
-  Rooms: []
+  MyRoom: {fileID: 0}
+  Patience: 0
+  Boredom: 0
 --- !u!195 &521675407029858421
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -241,7 +243,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.6, z: 0.2}
+  m_Size: {x: 0.2, y: 0.6, z: 0.35}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7448762136736630004
 Rigidbody:
@@ -278,7 +280,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8965387660112188689}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 58d31494fa140444a8b4a2056504e73c, type: 2}
   m_CullingMode: 0
