@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock.LowLevel;
@@ -18,6 +17,7 @@ public class Combover : Player
     Camera Camera;
 
     AudioClip VentFX;
+    AudioClip Woosh;
     private new void Start()
     {
         base.Start();
@@ -27,7 +27,8 @@ public class Combover : Player
         Sprite = transform.GetChild(1).gameObject;
         Camera = GetComponentInChildren<Camera>();
         BoxCollider = GetComponent<BoxCollider>();
-        VentFX = Resources.Load<AudioClip>("Vent");
+        VentFX = Resources.Load<AudioClip>("SFX/Vent");
+        Woosh = Resources.Load<AudioClip>("Woosh");
         this.enabled = false;
     }
 
@@ -66,7 +67,7 @@ public class Combover : Player
 
     public new void OnEast(InputValue value)
     {
-        if (Vent.Vents.Count >= 3)
+        if (IsVenting && Vent.Vents.Count >= 3)
         {
             MoveVents(2);
         }
@@ -76,6 +77,7 @@ public class Combover : Player
     {
         if (!panning)
         {
+            GameManager.AudioSource.PlayOneShot(Woosh);
             Vent.ToggleArrows(false);
             Vent = Vent.Vents[index];
             Vent.ToggleArrows(true);
@@ -109,6 +111,7 @@ public class Combover : Player
             Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
             if (hit.collider && hit.collider.name.Contains("Vent"))
             {
+                GameManager.AudioSource.PlayOneShot(VentFX);
                 Vent = hit.collider.GetComponent<Vent>();
                 IsVenting = true;
                 MovementVector = Vector2.zero;
@@ -120,6 +123,7 @@ public class Combover : Player
         }
         else if (!panning && IsVenting)
         {
+            GameManager.AudioSource.PlayOneShot(VentFX);
             Vent.ToggleArrows(false);
             Vent = null;
             Sprite.SetActive(true);

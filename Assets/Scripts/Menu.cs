@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+    bool credits;
+
+    private void Start()
+    {
+        credits = false;
+    }
     public void Begin()
     {
         SceneManager.LoadScene(1);
@@ -14,5 +20,12 @@ public class Menu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void ToggleCredits() 
+    {
+        credits = !credits;
+        GameObject.Find("CreditsNote").GetComponent<Animator>().SetBool("Toggle", credits);
+    }
+        
         
 }

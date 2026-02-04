@@ -12,6 +12,9 @@ public class Meathead : Player
     Transform CarriedTransform;
 
     GameObject Corpse;
+
+    AudioClip PickUp;
+    AudioClip PutDown;
     public new void Start()
     {
         base.Start();
@@ -22,6 +25,8 @@ public class Meathead : Player
         MeshAgent.Warp(new Vector3(-15, 1, 47));
         Corpse = transform.GetChild(1).GetChild(1).gameObject;
         Corpse.SetActive(false);
+        PickUp = Resources.Load<AudioClip>("SFX/PickUp");
+        PutDown = Resources.Load<AudioClip>("SFX/PutDown");
     }
 
     private void FixedUpdate()
@@ -44,6 +49,7 @@ public class Meathead : Player
             Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
             if (hit.collider && hit.collider.name.Contains("Corpse"))
             {
+                GameManager.AudioSource.PlayOneShot(PickUp);
                 CarriedTransform = hit.collider.transform;
                 CarriedTransform.GetComponent<NPC>().IsRelocated = false;
                 CarriedSprite = CarriedTransform.GetComponentInChildren<SpriteRenderer>();
@@ -56,8 +62,7 @@ public class Meathead : Player
         }
         else if(IsCarrying)
         {
-            RaycastHit hit;
-            Physics.Raycast(transform.position, -SpriteTransform.right, out hit, 1);
+            GameManager.AudioSource.PlayOneShot(PickUp);
             CarriedTransform.GetComponent<NPC>().IsRelocated = true;
             CarriedTransform.localPosition = new Vector3(-SpriteTransform.right.x * .2f, 0, -.05f);
             CarriedTransform.parent = null;

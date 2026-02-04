@@ -44,6 +44,10 @@ public class GameManager : MonoBehaviour
         Fall = Resources.Load<AudioClip>("SFX/Fall");
         Die = Resources.Load<AudioClip>("SFX/Die");
         Leave = Resources.Load<AudioClip>("SFX/Leave");
+
+        NPC.NPCsEscaped = 0;
+        NPC.NPCsKilled = 0;
+        Money = 0;
         //StartCoroutine(EndGame());
     }
 

@@ -58,7 +58,7 @@ public class NPC : MonoBehaviour
         Behavior = FiniteState.Idle;
         Animator = GetComponent<Animator>();
 
-        CorpseRadius = GetComponent<SphereCollider>();
+        CorpseRadius = transform.GetChild(2).GetComponent<SphereCollider>();
         DeathCall = transform.GetChild(1).GetComponent<SphereCollider>();
         Splatter = GetComponent<ParticleSystem>();
         Escape = GameObject.Find("Exit").transform.position;
@@ -117,7 +117,7 @@ public class NPC : MonoBehaviour
                 Agent.destination = Escape;
                 NPCsEscaped++;
                 GameManager.AudioSource.PlayOneShot(GameManager.Leave);
-                GameManager.Money -= 35000;
+                GameManager.Money -= 20000;
                 Destroy(this.gameObject);
             }
             else if (Behavior == FiniteState.Idle)
@@ -223,7 +223,7 @@ public class NPC : MonoBehaviour
             {
                 if (player.IsKiller && Suspicion < 100)
                 {
-                    Suspicion += (4.5f - Vector3.Distance(transform.position, position));
+                    Suspicion += (4.5f - Vector3.Distance(transform.position, position))*2/5;
                     if(Suspicion >= 100)
                     {
                         GameManager.Money -= 10000;
@@ -280,7 +280,7 @@ public class NPC : MonoBehaviour
         {
             if (Behavior != FiniteState.Escape)
             {
-                if (other.name.Contains("Death"))
+                if (other.name.Contains("DeathCry"))
                 {
                     Agent.SetDestination(other.transform.position);
                     Behavior = FiniteState.Investigate;
@@ -299,16 +299,16 @@ public class NPC : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!IsDead && Behavior != FiniteState.Escape && other.name.Contains("Corpse"))
+        if (!IsDead && Behavior != FiniteState.Escape && other.name.Contains("DeathRadius"))
         {
             RaycastHit hit;
             Vector3 Direction = other.transform.position - transform.position;
-            Physics.Raycast(transform.position, Direction, out hit, 10, BodySpotting);
+            Physics.Raycast(transform.position, Direction, out hit, 4, BodySpotting);
             Debug.DrawLine(transform.position, hit.point, Color.red, 7);
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead"))
+            if (hit.collider && hit.collider.gameObject.layer == LayerMask.NameToLayer("Dead"))
             {
                 Suspicion = 100;
-                GameManager.Money -= 25000;
+                GameManager.Money -= 10000;
             }
         }
     }
